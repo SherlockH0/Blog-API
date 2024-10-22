@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:14.2-alpine
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: blogapi
+      POSTGRES_USER: blogapi
+      POSTGRES_PASSWORD: blogapi
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+
+volumes:
+  postgresql-data:
+    driver: local

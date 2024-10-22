@@ -20,3 +20,7 @@ superuser:
 
 .PHONY: update
 update: install migrate ;
+
+.PHONY: docker-dependencies-only
+docker-dependencies-only:
+	docker-compose -f docker-compose.dev.yml up --force-recreate db
