@@ -1,9 +1,9 @@
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path
 
-from blogapi.blog import urls
+from .api import api
 
 urlpatterns = [
-    path("", include(urls)),
+    path("api/", api.urls),  # pyright: ignore[reportArgumentType, reportCallIssue]
     path("admin/", admin.site.urls),
 ]

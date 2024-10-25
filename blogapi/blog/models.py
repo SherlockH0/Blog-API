@@ -15,7 +15,10 @@ class Post(models.Model):
 
     # For the AI auto-answer features
     automaticly_answer_comments = models.BooleanField(default=True)
-    authomatic_answer_delay = models.DurationField(default=timedelta(minutes=30))
+    automatic_answer_delay = models.DurationField(default=timedelta(minutes=30))
+
+    def __str__(self):
+        return f"{self.title} by {self.author}"
 
 
 class Comment(models.Model):
@@ -32,3 +35,6 @@ class Comment(models.Model):
 
     is_blocked = models.BooleanField(default=False)
     is_AI_generated = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.author} commented {self.post}"
