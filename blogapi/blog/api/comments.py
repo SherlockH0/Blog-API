@@ -2,6 +2,7 @@ from typing import List
 
 from django.shortcuts import get_object_or_404
 from ninja import ModelSchema, PatchDict, Router
+from ninja_jwt.authentication import JWTAuth
 
 from blogapi.blog.api.author import Author
 from blogapi.blog.models import Comment

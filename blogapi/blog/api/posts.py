@@ -1,7 +1,10 @@
+from http import HTTPStatus
 from typing import List
 
 from django.shortcuts import get_object_or_404
 from ninja import ModelSchema, PatchDict, Router
+from ninja.errors import HttpError
+from ninja_jwt.authentication import JWTAuth
 
 from blogapi.blog.api.author import Author
 from blogapi.blog.models import Post
@@ -31,9 +34,9 @@ class PostOut(ModelSchema):
 # Create
 
 
-@router.post("")
+@router.post("", auth=JWTAuth())
 def create_post(request, payload: PostIn):
-    post = Post.objects.create(**payload.dict())
+    post = Post.objects.create(author_id=request.auth.id, **payload.dict())
     return {"id": post.pk}
 
 
@@ -55,9 +58,12 @@ def get_posts(request):
 # Update
 
 
-@router.put("/{post_id}")
+@router.put("/{post_id}", auth=JWTAuth())
 def update_post(request, post_id: int, payload: PostIn):
     post = get_object_or_404(Post, id=post_id)
+
+    if post.author.id != request.auth.id:
+        return HTTPStatus.FORBIDDEN
 
     for attr, value in payload.dict().items():
         setattr(post, attr, value)
@@ -66,13 +72,16 @@ def update_post(request, post_id: int, payload: PostIn):
     return {"success": True}
 
 
-@router.patch("/{post_id}")
+@router.patch("/{post_id}", auth=JWTAuth())
 def update_post_partial(
     request,
     post_id: int,
     payload: PatchDict[PostIn],  # pyright: ignore[reportInvalidTypeArguments]
 ):
     post = get_object_or_404(Post, id=post_id)
+
+    if post.author.id != request.auth.id:
+        raise HttpError(HTTPStatus.FORBIDDEN, "Only post's author can change it")
 
     for attr, value in payload.items():
         setattr(post, attr, value)

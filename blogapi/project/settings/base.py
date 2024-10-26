@@ -12,6 +12,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Third party
+    "ninja_extra",
     # Applications
     "blogapi.blog.apps.BlogConfig",
 ]
