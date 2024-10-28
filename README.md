@@ -16,6 +16,7 @@ Create local settings file:
 ```bash
 mkdir -p local
 cp blogapi/project/settings/templates/settings.dev.py ./local/settings.dev.py
+cp blogapi/project/settings/templates/settings.unittest.py ./local/settings.unittest.py
 ```
 
 Start PostgreSQL with docker:

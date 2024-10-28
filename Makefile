@@ -1,3 +1,7 @@
+.PHONY: docker-dependencies-only
+docker-dependencies-only:
+	docker-compose -f docker-compose.dev.yml up --force-recreate db
+
 .PHONY: install 
 install:
 	poetry install
@@ -21,6 +25,10 @@ superuser:
 .PHONY: update
 update: install migrate ;
 
-.PHONY: docker-dependencies-only
-docker-dependencies-only:
-	docker-compose -f docker-compose.dev.yml up --force-recreate db
+.PHONY: test
+test: 
+	poetry run pytest -v -rs --show-capture=all
+
+.PHONY: test-cov
+test-cov: 
+	poetry run pytest -v -rs --cov-report html --cov

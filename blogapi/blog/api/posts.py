@@ -18,7 +18,7 @@ class PostIn(ModelSchema):
             "title",
             "content",
             "automatic_answer_delay",
-            "automaticly_answer_comments",
+            "automatically_answer_comments",
         ]
 
 
