@@ -14,7 +14,7 @@ class Post(models.Model):
     last_modified = models.DateTimeField(auto_now=True)
 
     # For the AI auto-answer features
-    automaticly_answer_comments = models.BooleanField(default=True)
+    automatically_answer_comments = models.BooleanField(default=True)
     automatic_answer_delay = models.DurationField(default=timedelta(minutes=30))
 
     def __str__(self):
