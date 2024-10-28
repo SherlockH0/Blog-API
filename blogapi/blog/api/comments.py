@@ -27,7 +27,7 @@ class CommentOut(ModelSchema):
 # Create
 
 
-@router.post("")
+@router.post("", auth=JWTAuth())
 def create_comment(request, payload: CommentIn):
     comment = Comment.objects.create(**payload.dict())
     return {"id": comment.pk}
@@ -51,22 +51,22 @@ def get_comments(request):
 # Update
 
 
-@router.put("/{comment_id}")
+@router.put("/{comment_id}", auth=JWTAuth())
 def update_comment(request, comment_id: int, payload: CommentIn):
-    comment = get_object_or_404(Comment, id=comment_id)
+    comment = get_object_or_404(Comment, id=comment_id, author__id=request.auth.id)
     for attr, value in payload.dict().items():
         setattr(comment, attr, value)
     comment.save()
     return {"success": True}
 
 
-@router.patch("/{comment_id}")
+@router.patch("/{comment_id}", auth=JWTAuth())
 def update_comment_partial(
     request,
     comment_id: int,
     payload: PatchDict[CommentIn],  # pyright: ignore[reportInvalidTypeArguments]
 ):
-    comment = get_object_or_404(Comment, id=comment_id)
+    comment = get_object_or_404(Comment, id=comment_id, author__id=request.auth.id)
 
     for attr, value in payload.items():
         setattr(comment, attr, value)
@@ -78,8 +78,8 @@ def update_comment_partial(
 # Delete
 
 
-@router.delete("/{comment_id}")
+@router.delete("/{comment_id}", auth=JWTAuth())
 def delete_comment(request, comment_id: int):
-    comment = get_object_or_404(Comment, id=comment_id)
+    comment = get_object_or_404(Comment, id=comment_id, author__id=request.auth.id)
     comment.delete()
     return {"success": True}

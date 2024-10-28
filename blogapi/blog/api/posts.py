@@ -1,4 +1,3 @@
-from http import HTTPStatus
 from typing import List
 
 from django.shortcuts import get_object_or_404
@@ -60,10 +59,7 @@ def get_posts(request):
 
 @router.put("/{post_id}", auth=JWTAuth())
 def update_post(request, post_id: int, payload: PostIn):
-    post = get_object_or_404(Post, id=post_id)
-
-    if post.author.id != request.auth.id:
-        return HTTPStatus.FORBIDDEN
+    post = get_object_or_404(Post, id=post_id, author__id=request.auth.id)
 
     for attr, value in payload.dict().items():
         setattr(post, attr, value)
@@ -78,10 +74,7 @@ def update_post_partial(
     post_id: int,
     payload: PatchDict[PostIn],  # pyright: ignore[reportInvalidTypeArguments]
 ):
-    post = get_object_or_404(Post, id=post_id)
-
-    if post.author.id != request.auth.id:
-        raise HttpError(HTTPStatus.FORBIDDEN, "Only post's author can change it")
+    post = get_object_or_404(Post, id=post_id, author__id=request.auth.id)
 
     for attr, value in payload.items():
         setattr(post, attr, value)
@@ -93,8 +86,8 @@ def update_post_partial(
 # Delete
 
 
-@router.delete("/{post_id}")
+@router.delete("/{post_id}", auth=JWTAuth())
 def delete_post(request, post_id: int):
-    post = get_object_or_404(Post, id=post_id)
+    post = get_object_or_404(Post, id=post_id, author__id=request.auth.id)
     post.delete()
     return {"success": True}
