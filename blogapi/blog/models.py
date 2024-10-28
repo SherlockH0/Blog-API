@@ -33,8 +33,8 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
-    is_blocked = models.BooleanField(default=False)
-    is_AI_generated = models.BooleanField(default=False)
+    blocked = models.BooleanField(default=False)
+    ai_generated = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.author} commented {self.post}"
