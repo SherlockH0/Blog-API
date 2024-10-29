@@ -1,8 +1,8 @@
 from typing import List
 
+from django.db import Error
 from django.shortcuts import get_object_or_404
 from ninja import ModelSchema, PatchDict, Router
-from ninja.errors import HttpError
 from ninja_jwt.authentication import JWTAuth
 
 from blogapi.blog.api.author import Author
@@ -20,6 +20,10 @@ class PostIn(ModelSchema):
             "automatic_answer_delay",
             "automatically_answer_comments",
         ]
+        fields_optional = [
+            "automatic_answer_delay",
+            "automatically_answer_comments",
+        ]
 
 
 class PostOut(ModelSchema):
@@ -33,10 +37,10 @@ class PostOut(ModelSchema):
 # Create
 
 
-@router.post("", auth=JWTAuth())
+@router.post("", auth=JWTAuth(), response={201: PostOut})
 def create_post(request, payload: PostIn):
     post = Post.objects.create(author_id=request.auth.id, **payload.dict())
-    return {"id": post.pk}
+    return 201, post
 
 
 # Read
@@ -57,7 +61,7 @@ def get_posts(request):
 # Update
 
 
-@router.put("/{post_id}", auth=JWTAuth())
+@router.put("/{post_id}", auth=JWTAuth(), response=PostOut)
 def update_post(request, post_id: int, payload: PostIn):
     post = get_object_or_404(Post, id=post_id, author__id=request.auth.id)
 
@@ -65,10 +69,10 @@ def update_post(request, post_id: int, payload: PostIn):
         setattr(post, attr, value)
 
     post.save()
-    return {"success": True}
+    return post
 
 
-@router.patch("/{post_id}", auth=JWTAuth())
+@router.patch("/{post_id}", auth=JWTAuth(), response=PostOut)
 def update_post_partial(
     request,
     post_id: int,
@@ -80,14 +84,14 @@ def update_post_partial(
         setattr(post, attr, value)
 
     post.save()
-    return {"success": True}
+    return post
 
 
 # Delete
 
 
-@router.delete("/{post_id}", auth=JWTAuth())
+@router.delete("/{post_id}", auth=JWTAuth(), response={204: None})
 def delete_post(request, post_id: int):
     post = get_object_or_404(Post, id=post_id, author__id=request.auth.id)
     post.delete()
-    return {"success": True}
+    return 204

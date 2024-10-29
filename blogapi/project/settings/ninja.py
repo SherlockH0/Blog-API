@@ -1,5 +1,9 @@
 from typing import Any
 
+NINJA_JWT = {
+    "SIGNING_KEY": "bmxex)1w=o^2**5tzj&uyam9c^y5)b!)@be+=(4yb63r!d$k)x",
+}
+
 
 # Fixes `RemovedInDjango60Warning`. Source: https://github.com/vitalik/django-ninja/issues/1266#issuecomment-2336579784
 def monkeypatch_ninja_uuid_converter() -> None:

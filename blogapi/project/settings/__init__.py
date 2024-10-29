@@ -13,7 +13,7 @@ LOCAL_SETTINGS_PATH = os.getenv(f"{ENVVAR_SETTINGS_PREFIX}LOCAL_SETTINGS_PATH")
 
 if not LOCAL_SETTINGS_PATH:
     LOCAL_SETTINGS_PATH = (
-        f"local/settings.{'unittests' if is_pytest_running() else 'dev'}.py"
+        f"local/settings.{'unittest' if is_pytest_running() else 'dev'}.py"
     )
 
 if not os.path.isabs(LOCAL_SETTINGS_PATH):

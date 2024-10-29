@@ -1,19 +1,20 @@
-from typing import List
+from typing import List, Optional
 
 from django.shortcuts import get_object_or_404
-from ninja import ModelSchema, PatchDict, Router
+from ninja import ModelSchema, PatchDict, Router, Schema
 from ninja_jwt.authentication import JWTAuth
 
 from blogapi.blog.api.author import Author
 from blogapi.blog.models import Comment
+from blogapi.blog.services import new_comment
 
 router = Router()
 
 
-class CommentIn(ModelSchema):
-    class Meta:
-        model = Comment
-        fields = ["content", "parent_comment"]
+class CommentIn(Schema):
+    post_id: int
+    content: str
+    parent_comment_id: Optional[int] = None
 
 
 class CommentOut(ModelSchema):
@@ -27,10 +28,10 @@ class CommentOut(ModelSchema):
 # Create
 
 
-@router.post("", auth=JWTAuth())
+@router.post("", auth=JWTAuth(), response={201: CommentOut})
 def create_comment(request, payload: CommentIn):
-    comment = Comment.objects.create(**payload.dict())
-    return {"id": comment.pk}
+    comment = new_comment(request.auth.id, payload.dict())
+    return 201, comment
 
 
 # Read
@@ -51,16 +52,17 @@ def get_comments(request):
 # Update
 
 
-@router.put("/{comment_id}", auth=JWTAuth())
+@router.put("/{comment_id}", auth=JWTAuth(), response=CommentOut)
 def update_comment(request, comment_id: int, payload: CommentIn):
     comment = get_object_or_404(Comment, id=comment_id, author__id=request.auth.id)
     for attr, value in payload.dict().items():
         setattr(comment, attr, value)
     comment.save()
-    return {"success": True}
+
+    return comment
 
 
-@router.patch("/{comment_id}", auth=JWTAuth())
+@router.patch("/{comment_id}", auth=JWTAuth(), response=CommentOut)
 def update_comment_partial(
     request,
     comment_id: int,
@@ -72,14 +74,14 @@ def update_comment_partial(
         setattr(comment, attr, value)
 
     comment.save()
-    return {"success": True}
+    return comment
 
 
 # Delete
 
 
-@router.delete("/{comment_id}", auth=JWTAuth())
+@router.delete("/{comment_id}", auth=JWTAuth(), response={204: None})
 def delete_comment(request, comment_id: int):
     comment = get_object_or_404(Comment, id=comment_id, author__id=request.auth.id)
     comment.delete()
-    return {"success": True}
+    return 204
