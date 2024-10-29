@@ -14,6 +14,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Third party
     "ninja_extra",
+    "django_celery_beat",
     # Applications
     "blogapi.blog.apps.BlogConfig",
 ]

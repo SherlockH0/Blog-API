@@ -1,6 +1,6 @@
 .PHONY: docker-dependencies-only
 docker-dependencies-only:
-	docker-compose -f docker-compose.dev.yml up --force-recreate db
+	docker-compose -f docker-compose.dev.yml up --force-recreate
 
 .PHONY: install 
 install:
