@@ -27,8 +27,12 @@ update: install migrate ;
 
 .PHONY: test
 test: 
-	poetry run pytest -v -rs --cov --show-capture=all
+	poetry run pytest -v -rs --show-capture=all
 
 .PHONY: test-cov
+test-cov: 
+	poetry run pytest -v -rs --cov --show-capture=all
+
+.PHONY: test-cov-html
 test-cov-html: 
 	poetry run pytest -v -rs --cov --cov-report html

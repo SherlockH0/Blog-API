@@ -34,7 +34,7 @@ def test_read_comment(
         "parent_comment": comment.parent_comment,
         "created": f"{comment.created.isoformat()[:-9]}Z",
         "last_modified": f"{comment.last_modified.isoformat()[:-9]}Z",
-        "blocked": comment.blocked,
+        "status": comment.status,
         "ai_generated": comment.ai_generated,
     }
 

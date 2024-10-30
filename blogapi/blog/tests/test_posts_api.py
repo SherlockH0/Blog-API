@@ -35,6 +35,7 @@ def test_read_post(
         "created": f"{post.created.isoformat()[:-9]}Z",
         "last_modified": f"{post.last_modified.isoformat()[:-9]}Z",
         "automatically_answer_comments": post.automatically_answer_comments,
+        "status": post.status,
         "automatic_answer_delay": timedelta_isoformat(post.automatic_answer_delay),
     }
 
