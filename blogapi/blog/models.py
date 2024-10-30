@@ -22,6 +22,8 @@ class BaseResource(models.Model):
 
     block_reason = models.TextField(blank=True, null=True)
 
+    content = models.TextField()
+
     class Meta:  # pyright: ignore
         abstract = True
         ordering = ("-created",)

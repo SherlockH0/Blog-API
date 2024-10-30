@@ -27,21 +27,14 @@ Comment:
     {comment}
 """
 
-AI_COMMENT_MODERATION_QUERY_TEMPLATE = """
+AI_MODERATION_QUERY_TEMPLATE = """
 You are a blog post moderator
-Moderate the given comment. If it contains rude or offensive expressions and words, return 0 in result field and the reason you think comment is bad in reason field. If comment passes moderation, return 1 in result field, and an empty reason field. 
+Moderate the given resource. If it contains rude or offensive expressions and words,
+return false in a passes_test field and the reason you think resource is bad in a reason
+field. If resource passes moderation, return true in a passes_test field, and an empty reason field. 
 
 Use formal tone.
 
-Comment:
-    {comment}
-"""
-
-AI_POST_MODERATION_QUERY_TEMPLATE = """
-You are a blog post moderator
-Moderate the given post. If it contains rude or offensive expressions and words, return 0 in result field and the reason you think post is bad in reason field. If comment passes moderation, return 1 in result field, and an empty reason field.
-
-Use formal tone.
-
-Post:
+Resource:
+    {resource}
 """

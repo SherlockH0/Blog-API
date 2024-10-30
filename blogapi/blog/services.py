@@ -2,7 +2,7 @@ import django_rq
 
 from blogapi.blog.models import Comment
 
-from .tasks import answer_comment
+from .tasks import answer_comment, moderate_resource
 
 
 def new_comment(user_id: int, data: dict) -> Comment:
@@ -10,6 +10,8 @@ def new_comment(user_id: int, data: dict) -> Comment:
         author_id=user_id,
         **data,
     )
+
+    django_rq.enqueue(moderate_resource, comment)
 
     if comment.post.automatically_answer_comments:
         scheduler = django_rq.get_scheduler("default")
