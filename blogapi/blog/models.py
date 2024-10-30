@@ -56,6 +56,7 @@ class Comment(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
+        default=None,
     )
 
     content = models.TextField(

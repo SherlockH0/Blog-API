@@ -23,6 +23,7 @@ include(
     "base.py",
     "custom.py",
     "ninja.py",
+    "rq.py",
     optional(LOCAL_SETTINGS_PATH),
     "envvars.py",
 )

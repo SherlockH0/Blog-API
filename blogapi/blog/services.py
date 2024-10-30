@@ -1,9 +1,8 @@
-import json
-
-from django.utils.timezone import now
-from django_celery_beat.models import ClockedSchedule, PeriodicTask
+import django_rq
 
 from blogapi.blog.models import Comment
+
+from .tasks import answer_comment
 
 
 def new_comment(user_id: int, data: dict) -> Comment:
@@ -12,17 +11,10 @@ def new_comment(user_id: int, data: dict) -> Comment:
         **data,
     )
 
-    clocked, _ = ClockedSchedule.objects.get_or_create(
-        clocked_time=now() + comment.post.automatic_answer_delay
-    )
-
     if comment.post.automatically_answer_comments:
-        PeriodicTask.objects.create(
-            clocked=clocked,
-            name=f"Answer comment {comment.pk}",
-            task="blogapi.blog.tasks.answer_comment",
-            args=json.dumps([comment.pk]),
-            one_off=True,
+        scheduler = django_rq.get_scheduler("default")
+        scheduler.enqueue_in(
+            comment.post.automatic_answer_delay, answer_comment, comment.pk
         )
 
     return comment

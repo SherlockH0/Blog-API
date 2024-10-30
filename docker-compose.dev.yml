@@ -11,10 +11,9 @@ services:
     volumes:
       - postgresql-data:/var/lib/postgresql/data
   broker:
-    image: rabbitmq:3.13-management
+    image: redis:7.2.6-alpine
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "6379:6379"
 
 volumes:
   postgresql-data:

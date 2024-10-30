@@ -16,8 +16,8 @@ django-ninja-jwt = "^5.3.4"
 django-ninja-extra = "^0.21.4"
 isodate = "^0.7.2"
 google-generativeai = "^0.8.3"
-celery = "^5.4.0"
-django-celery-beat = "^2.7.0"
+django-rq = "^3.0.0"
+rq-scheduler = "^0.14.0"
 
 [tool.poetry.group.dev.dependencies]
 django-types = "^0.19.1"
