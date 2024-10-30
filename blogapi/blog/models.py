@@ -5,13 +5,29 @@ from django.core.validators import MinLengthValidator
 from django.db import models
 
 
-class Statuses(models.TextChoices):
-    ACTIVE = "+", "Active"
-    BLOCKED = "-", "Blocked"
-    IN_MODERATION = "/", "In moderation"
+class BaseResource(models.Model):
+    class Statuses(models.TextChoices):
+        ACTIVE = "+", "Active"
+        BLOCKED = "-", "Blocked"
+        IN_MODERATION = "/", "In moderation"
+
+    created = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
+
+    status = models.CharField(  # pyright: ignore
+        max_length=1,
+        choices=Statuses,  # pyright: ignore
+        default=Statuses.IN_MODERATION,
+    )
+
+    block_reason = models.TextField(blank=True, null=True)
+
+    class Meta:  # pyright: ignore
+        abstract = True
+        ordering = ("-created",)
 
 
-class Post(models.Model):
+class Post(BaseResource):
 
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -25,15 +41,6 @@ class Post(models.Model):
         ]
     )
 
-    created = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
-
-    status = models.CharField(  # pyright: ignore
-        max_length=1,
-        choices=Statuses,  # pyright: ignore
-        default=Statuses.IN_MODERATION,
-    )
-
     # For the AI auto-answer features
     automatically_answer_comments = models.BooleanField(default=True)
     automatic_answer_delay = models.DurationField(default=timedelta(minutes=30))
@@ -42,7 +49,7 @@ class Post(models.Model):
         return f"{self.title} by {self.author}"
 
 
-class Comment(models.Model):
+class Comment(BaseResource):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -62,15 +69,6 @@ class Comment(models.Model):
     content = models.TextField(
         max_length=600,
         validators=[MinLengthValidator(15, "Enter at least 15 characters.")],
-    )
-
-    created = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now=True)
-
-    status = models.CharField(  # pyright: ignore
-        max_length=1,
-        choices=Statuses,  # pyright: ignore
-        default=Statuses.IN_MODERATION,
     )
 
     ai_generated = models.BooleanField(default=False)
