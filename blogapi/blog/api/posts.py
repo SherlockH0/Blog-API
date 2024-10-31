@@ -1,6 +1,5 @@
 from typing import List
 
-from django.db import Error
 from django.shortcuts import get_object_or_404
 from ninja import ModelSchema, PatchDict, Router
 from ninja_jwt.authentication import JWTAuth

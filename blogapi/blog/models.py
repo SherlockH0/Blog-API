@@ -3,6 +3,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.core.validators import MinLengthValidator
 from django.db import models
+from django.db.models import Manager
 
 
 class BaseResource(models.Model):
@@ -46,6 +47,7 @@ class Post(BaseResource):
     # For the AI auto-answer features
     automatically_answer_comments = models.BooleanField(default=True)
     automatic_answer_delay = models.DurationField(default=timedelta(minutes=30))
+    comment_set: Manager["Comment"]
 
     def __str__(self):
         return f"{self.title} by {self.author}"

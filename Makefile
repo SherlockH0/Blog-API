@@ -22,6 +22,10 @@ runserver:
 superuser:
 	poetry run python -m blogapi.manage createsuperuser
 
+.PHONY: shell
+shell:
+	poetry run python -m blogapi.manage shell
+
 .PHONY: update
 update: install migrate ;
 

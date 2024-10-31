@@ -24,15 +24,13 @@ def answer_comment(comment_id: int):
         )
     )
 
-    new_comment = Comment.objects.create(
+    Comment.objects.create(
         author=post.author,
         post=post,
         parent_comment=comment,
         content=response.text,
         ai_generated=True,
     )
-
-    return f"Created: {new_comment.pk}"
 
 
 class ModerationResult(TypedDict):
@@ -60,7 +58,7 @@ def moderate_resource(obj: BaseResource):
 
     if results["passes_test"]:
         obj.status = BaseResource.Statuses.ACTIVE
-        obj.block_reason = ""
+        obj.block_reason = None
     else:
         obj.status = BaseResource.Statuses.BLOCKED
         obj.block_reason = results["reason"]

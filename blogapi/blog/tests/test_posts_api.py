@@ -37,6 +37,7 @@ def test_read_post(
         "automatically_answer_comments": post.automatically_answer_comments,
         "status": post.status,
         "automatic_answer_delay": timedelta_isoformat(post.automatic_answer_delay),
+        "block_reason": None,
     }
 
 

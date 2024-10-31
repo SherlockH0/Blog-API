@@ -36,6 +36,7 @@ def test_read_comment(
         "last_modified": f"{comment.last_modified.isoformat()[:-9]}Z",
         "status": comment.status,
         "ai_generated": comment.ai_generated,
+        "block_reason": None,
     }
 
 
