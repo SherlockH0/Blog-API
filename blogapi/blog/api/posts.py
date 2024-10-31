@@ -7,6 +7,7 @@ from ninja_jwt.authentication import JWTAuth
 
 from blogapi.blog.api.author import Author
 from blogapi.blog.models import Post
+from blogapi.blog.services import new_post, update_resource
 
 router = Router()
 
@@ -39,7 +40,7 @@ class PostOut(ModelSchema):
 
 @router.post("", auth=JWTAuth(), response={201: PostOut})
 def create_post(request, payload: PostIn):
-    post = Post.objects.create(author_id=request.auth.id, **payload.dict())
+    post = new_post(request.auth.id, payload.dict())
     return 201, post
 
 
@@ -65,11 +66,7 @@ def get_posts(request):
 def update_post(request, post_id: int, payload: PostIn):
     post = get_object_or_404(Post, id=post_id, author__id=request.auth.id)
 
-    for attr, value in payload.dict().items():
-        setattr(post, attr, value)
-
-    post.save()
-    return post
+    return update_resource(post, payload.dict())
 
 
 @router.patch("/{post_id}", auth=JWTAuth(), response=PostOut)
@@ -80,11 +77,7 @@ def update_post_partial(
 ):
     post = get_object_or_404(Post, id=post_id, author__id=request.auth.id)
 
-    for attr, value in payload.items():
-        setattr(post, attr, value)
-
-    post.save()
-    return post
+    return update_resource(post, payload)
 
 
 # Delete

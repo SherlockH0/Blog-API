@@ -1,5 +1,4 @@
 import json
-import logging
 from typing import TypedDict
 
 import google.generativeai as genai
@@ -9,8 +8,6 @@ from blogapi.blog.models import BaseResource, Comment
 
 genai.configure(api_key=settings.GOOGLE_AI_API_KEY)
 model = genai.GenerativeModel("gemini-1.5-flash")
-
-logger = logging.getLogger(__name__)
 
 
 def answer_comment(comment_id: int):
@@ -44,6 +41,14 @@ class ModerationResult(TypedDict):
 
 
 def moderate_resource(obj: BaseResource):
+    """
+    Checks the `obj`'s content field for obscene expressions or words.
+    If present, sets the `obj` status field to `Blocked` and adds a reason to the `block_reason` field.
+    If the `obj` is clean, sets the `status` field to `Active` and sets the `block_reason` field to an empty string.
+
+    Moderation query for an AI model can be changed using `AI_MODERATION_QUERY_TEMPLATE`
+    setting in settings.py
+    """
     response = model.generate_content(
         settings.AI_MODERATION_QUERY_TEMPLATE.format(resource=obj.content),
         generation_config=genai.GenerationConfig(
@@ -59,7 +64,5 @@ def moderate_resource(obj: BaseResource):
     else:
         obj.status = BaseResource.Statuses.BLOCKED
         obj.block_reason = results["reason"]
-
-    logger.info(BaseResource.Statuses.ACTIVE, obj.status)
 
     obj.save()
