@@ -4,6 +4,7 @@ from typing import List, Optional
 from django.db.models import Count, F, Q
 from django.shortcuts import get_object_or_404
 from ninja import ModelSchema, PatchDict, Router, Schema
+from ninja.pagination import paginate
 from ninja_jwt.authentication import JWTAuth
 
 from blogapi.blog.api.author import Author
@@ -46,6 +47,7 @@ def get_comment(request, comment_id: int):
 
 
 @router.get("", response=List[CommentOut])
+@paginate
 def get_comments(request):
     queryset = Comment.objects.all()
     return queryset

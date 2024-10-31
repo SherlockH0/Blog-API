@@ -2,6 +2,7 @@ from typing import List
 
 from django.shortcuts import get_object_or_404
 from ninja import ModelSchema, PatchDict, Router
+from ninja.pagination import paginate
 from ninja_jwt.authentication import JWTAuth
 
 from blogapi.blog.api.author import Author
@@ -53,6 +54,7 @@ def get_post(request, post_id: int):
 
 
 @router.get("", response=List[PostOut])
+@paginate
 def get_posts(request):
     queryset = Post.objects.all()
     return queryset
