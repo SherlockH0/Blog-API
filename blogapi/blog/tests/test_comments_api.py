@@ -10,7 +10,7 @@ def test_read_comments(
 ):
     response = comment_api_client.get("/")
     expected_ids = Comment.objects.all().values_list("id", flat=True)
-    response_ids = [comment["id"] for comment in response.data]
+    response_ids = [comment["id"] for comment in response.data["items"]]
 
     assert response.status_code == 200
     assert set(response_ids) == set(expected_ids)
@@ -34,6 +34,11 @@ def test_read_comment(
         "parent_comment": comment.parent_comment,
         "created": f"{comment.created.isoformat()[:-9]}Z",
         "last_modified": f"{comment.last_modified.isoformat()[:-9]}Z",
+        "last_moderated": (
+            f"{comment.last_moderated.isoformat()[:-9]}Z"
+            if comment.last_moderated
+            else None
+        ),
         "status": comment.status,
         "ai_generated": comment.ai_generated,
         "block_reason": None,

@@ -3,6 +3,7 @@ from typing import TypedDict
 
 import google.generativeai as genai
 from django.conf import settings
+from django.utils.timezone import now
 
 from blogapi.blog.models import BaseResource, Comment
 
@@ -63,4 +64,5 @@ def moderate_resource(obj: BaseResource):
         obj.status = BaseResource.Statuses.BLOCKED
         obj.block_reason = results["reason"]
 
+    obj.last_moderated = now()
     obj.save()

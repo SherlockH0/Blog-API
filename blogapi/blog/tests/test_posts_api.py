@@ -11,7 +11,7 @@ def test_read_posts(
 ):
     response = post_api_client.get("/")
     expected_ids = Post.objects.all().values_list("id", flat=True)
-    response_ids = [post["id"] for post in response.data]
+    response_ids = [post["id"] for post in response.data["items"]]
 
     assert response.status_code == 200
     assert set(response_ids) == set(expected_ids)
@@ -34,6 +34,9 @@ def test_read_post(
         "content": post.content,
         "created": f"{post.created.isoformat()[:-9]}Z",
         "last_modified": f"{post.last_modified.isoformat()[:-9]}Z",
+        "last_moderated": (
+            f"{post.last_moderated.isoformat()[:-9]}Z" if post.last_moderated else None
+        ),
         "automatically_answer_comments": post.automatically_answer_comments,
         "status": post.status,
         "automatic_answer_delay": timedelta_isoformat(post.automatic_answer_delay),

@@ -8,15 +8,16 @@ from django.db.models import Manager
 
 class BaseResource(models.Model):
     class Statuses(models.TextChoices):
-        ACTIVE = "+", "Active"
-        BLOCKED = "-", "Blocked"
-        IN_MODERATION = "/", "In moderation"
+        ACTIVE = "active", "Active"
+        BLOCKED = "blocked", "Blocked"
+        IN_MODERATION = "moderation", "In moderation"
 
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
+    last_moderated = models.DateTimeField(null=True, blank=True)
 
     status = models.CharField(  # pyright: ignore
-        max_length=1,
+        max_length=10,
         choices=Statuses,  # pyright: ignore
         default=Statuses.IN_MODERATION,
     )
