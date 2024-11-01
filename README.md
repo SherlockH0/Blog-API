@@ -2,6 +2,8 @@
 
 ## Installation
 
+### Development
+
 Dependencies:
 
 - [Docker](https://www.docker.com/)
@@ -9,9 +11,7 @@ Dependencies:
 - [Python ^3.12](https://www.python.org/)
 - [Poetry](https://python-poetry.org/)
 
-### Development
-
-Create local settings file:
+Create local settings files:
 
 ```bash
 mkdir -p local

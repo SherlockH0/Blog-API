@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:14.2-alpine
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: blogapi
+      POSTGRES_USER: blogapi
+      POSTGRES_PASSWORD: blogapi
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+  broker:
+    image: redis:7.2.6-alpine
+    ports:
+      - "6379:6379"
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - broker
+    environment:
+      BLOGAPI_SETTING_DATABASES: '{"default":{"HOST":"db"}}'
+      BLOGAPI_SETTING_LOCAL_SETTINGS_PATH: "local/settings.prod.py"
+
+volumes:
+  postgresql-data:
+    driver: local

@@ -2,8 +2,6 @@
 Settings specific to this application only (no Django or third party settings)
 """
 
-IN_DOCKER = False
-
 AI_COMMENT_QUERY_TEMPLATE = """
 You are a bot, designed to answer comments under the blogpost on behalf of the post's author.
 
