@@ -1,7 +1,8 @@
-from typing import List
+from datetime import datetime
+from typing import List, Optional
 
 from django.shortcuts import get_object_or_404
-from ninja import ModelSchema, PatchDict, Router
+from ninja import FilterSchema, ModelSchema, PatchDict, Query, Router
 from ninja.pagination import paginate
 from ninja_jwt.authentication import JWTAuth
 
@@ -35,6 +36,11 @@ class PostOut(ModelSchema):
         fields = "__all__"
 
 
+class PostFilterSchema(FilterSchema):
+    created: Optional[datetime] = None
+    author: Optional[int] = None
+
+
 # Create
 
 
@@ -55,9 +61,10 @@ def get_post(request, post_id: int):
 
 @router.get("", response=List[PostOut])
 @paginate
-def get_posts(request):
-    queryset = Post.objects.all()
-    return queryset
+def list_posts(request, filters: Query[PostFilterSchema]):
+    posts = Post.objects.all()
+    posts = filters.filter(posts)
+    return posts
 
 
 # Update

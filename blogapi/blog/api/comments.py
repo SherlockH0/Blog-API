@@ -1,9 +1,9 @@
-from datetime import date
+from datetime import date, datetime
 from typing import List, Optional
 
 from django.db.models import Count, F, Q
 from django.shortcuts import get_object_or_404
-from ninja import ModelSchema, PatchDict, Router, Schema
+from ninja import FilterSchema, ModelSchema, PatchDict, Query, Router, Schema
 from ninja.pagination import paginate
 from ninja_jwt.authentication import JWTAuth
 
@@ -28,6 +28,12 @@ class CommentOut(ModelSchema):
         fields = "__all__"
 
 
+class CommentFilterSchema(FilterSchema):
+    created: Optional[datetime] = None
+    author: Optional[int] = None
+    post: Optional[int] = None
+
+
 # Create
 
 
@@ -48,9 +54,10 @@ def get_comment(request, comment_id: int):
 
 @router.get("", response=List[CommentOut])
 @paginate
-def get_comments(request):
-    queryset = Comment.objects.all()
-    return queryset
+def list_comments(request, filters: Query[CommentFilterSchema]):
+    comments = Comment.objects.all()
+    comments = filters.filter(comments)
+    return comments
 
 
 # Update

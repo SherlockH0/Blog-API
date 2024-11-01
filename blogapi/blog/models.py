@@ -31,7 +31,6 @@ class BaseResource(models.Model):
 
 
 class Post(BaseResource):
-
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
