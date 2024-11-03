@@ -13,6 +13,10 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 
 def answer_comment(comment_id: int):
     comment = Comment.objects.get(id=comment_id)
+
+    if comment.status != BaseResource.Statuses.ACTIVE:
+        return
+
     post = comment.post
     response = model.generate_content(
         settings.AI_COMMENT_QUERY_TEMPLATE.format(
