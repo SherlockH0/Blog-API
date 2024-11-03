@@ -6,6 +6,9 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONPATH .
 
+ENV BLOGAPI_SETTING_DATABASES '{"default":{"HOST":"db"}}'
+ENV BLOGAPI_SETTING_LOCAL_SETTINGS_PATH "local/settings.prod.py"
+ENV BLOGAPI_SETTING_RQ_QUEUES '{"default": { "HOST": "broker"}}'
 
 RUN set -xe \
     && apt-get update \
@@ -18,12 +21,10 @@ COPY ["poetry.lock", "pyproject.toml", "./"]
 RUN poetry install --no-root
 
 COPY ["README.md", "Makefile", "./"]
-COPY blogapi blogapi
-COPY local local
 
 EXPOSE 8000
 
-COPY scripts/entrypoint.sh /entrypoint.sh
-RUN chmod a+x /entrypoint.sh
+COPY scripts scripts
+RUN chmod a+x scripts/*
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT [ "scripts/docker_entrypoint.sh" ]
