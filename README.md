@@ -1,6 +1,6 @@
 # Blog API
 
-This is a simple blog API written in python using Django and Django Ninja.
+This is a simple blog API with AI moderation features, written in python with Django and Django Ninja.
 
 ##### Table of Contents
 
