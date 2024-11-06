@@ -74,25 +74,32 @@ And add set a google AI API key in both of them (`.dev` file is used for develop
 + GOOGLE_AI_API_KEY = "djjnJIJIJhkh"
 ```
 
-If your system supports `Makefile`, you can use `make` shortcuts:
-
-<details>
-<summary>With Makefile (Linux, MacOS, Windows (WSL))</summary>
-Start PostgreSQL and Redis with docker:
+Create and activate virtual environment:
 
 ```bash
-make docker-dependencies-only
+python -m venv venv
+# Linux, MacOS, Windows (WSL)
+source venv/bin/activate
+# Windows
+venv\Scripts\activate.bat
 ```
 
-If you have `poetry` installed, you can use it to run the application, or you can just use `pip`:
+In a separate terminal window start PostgreSQL and Redis with docker:
+
+```bash
+docker-compose -f docker-compose.dev.yml up --force-recreate
+```
+
+Then, continue depending on your system:
 
 <details>
-<summary>With poetry</summary>
+<summary>With Makefile and Poetry (Linux, MacOS, Windows (WSL))</summary>
 
 Install the project using poetry, and create superuser:
 
 ```bash
-make update
+make install
+make migrate
 make superuser
 ```
 
@@ -133,59 +140,7 @@ make test-cov-html
 
 </details>
 <details>
-<summary>With pip</summary>
-Create virtual environment:
-
-```bash
-python -m venv venv
-```
-
-Install the project using pip, migrate the database, and create superuser:
-
-```bash
-pip install .
-python -m blogapi.manage migrate
-python -m blogapi.manage createsuperuser
-```
-
-Run local server:
-
-```bash
-python -m blogapi.manage runserver
-```
-
-In a different terminal window, run rq worker and scheduler:
-
-```bash
-python -m blogapi.manage rqworker default
-python -m blogapi.manage rqscheduler
-```
-
-To run tests, run:
-
-```bash
-pytest -v -rs
-# With coverage
-pytest -v -rs --cov
-# With html coverage
-pytest -v -rs --cov --cov-report html
-```
-
-</details>
-</details>
-
-<details>
-<summary>Without Makefile (Windows)</summary>
-Start PostgreSQL and Redis with docker:
-
-```bash
-docker-compose -f docker-compose.dev.yml up --force-recreate
-```
-
-If you have `poetry` installed, you can use it to run the application, or you can just use `pip`:
-
-<details>
-<summary>With poetry</summary>
+<summary>With Poetry (All systems with Poetry installed)</summary>
 
 Install the project using poetry, migrate the database, and create superuser:
 
@@ -232,12 +187,7 @@ poetry run pytest -v -rs --cov --cov-report html
 
 </details>
 <details>
-<summary>With pip</summary>
-Create virtual environment:
-
-```bash
-python -m venv venv
-```
+<summary>With pip (All systems)</summary>
 
 Install the project using pip, migrate the database, and create superuser:
 
@@ -270,7 +220,6 @@ pytest -v -rs --cov
 pytest -v -rs --cov --cov-report html
 ```
 
-</details>
 </details>
 
 ## API Docs
