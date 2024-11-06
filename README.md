@@ -1,6 +1,6 @@
 # Blog API
 
-This is a simple blog API written in python using Django and Django Ninja.
+This is a simple blog API with AI moderation features, written in python with Django and Django Ninja.
 
 ##### Table of Contents
 
@@ -84,7 +84,7 @@ Start PostgreSQL and Redis with docker:
 make docker-dependencies-only
 ```
 
-If you have `poetry` installed, you can use it to run the application:
+If you have `poetry` installed, you can use it to run the application, or you can just use `pip`:
 
 <details>
 <summary>With poetry</summary>
@@ -182,7 +182,7 @@ Start PostgreSQL and Redis with docker:
 docker-compose -f docker-compose.dev.yml up --force-recreate
 ```
 
-If you have `poetry` installed, you can use it to run the application:
+If you have `poetry` installed, you can use it to run the application, or you can just use `pip`:
 
 <details>
 <summary>With poetry</summary>
