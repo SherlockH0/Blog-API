@@ -13,7 +13,7 @@ This is a simple blog API with AI moderation features, written in python with Dj
 
 ## Demo
 
-![Demo](https://images.unsplash.com/photo-1437482078695-73f5ca6c96e2?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+[![Watch the video](https://img.youtube.com/vi/MnOoMGSmVR8/maxresdefault.jpg)](https://youtu.be/MnOoMGSmVR8)
 
 ## Usage
 
