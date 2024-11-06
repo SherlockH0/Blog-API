@@ -7,7 +7,7 @@ This is a simple blog API with AI moderation features, written in python with Dj
 - [Demo](#demo)
 - [Usage](#usage)
   - [Launching the application in testing mode](#launching-the-application-in-testing-mode)
-  - [Development](#development)
+  - [Development](#development-and-running-tests)
 - [API Docs](#api-docs)
   - [Authentication](#authentication)
 
