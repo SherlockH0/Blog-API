@@ -95,7 +95,7 @@ Then, continue depending on your system:
 <details>
 <summary>With Makefile and Poetry (Linux, MacOS, Windows (WSL))</summary>
 
-Install the project using poetry, and create superuser:
+Install the project using poetry, migrate the database, and create superuser (optional):
 
 ```bash
 make install
@@ -142,7 +142,7 @@ make test-cov-html
 <details>
 <summary>With Poetry (All systems with Poetry installed)</summary>
 
-Install the project using poetry, migrate the database, and create superuser:
+Install the project using poetry, migrate the database, and create superuser (optional):
 
 ```bash
 poetry install
@@ -189,7 +189,7 @@ poetry run pytest -v -rs --cov --cov-report html
 <details>
 <summary>With pip (All systems)</summary>
 
-Install the project using pip, migrate the database, and create superuser:
+Install the project using pip, migrate the database, and create superuser (optional):
 
 ```bash
 pip install .
@@ -224,9 +224,9 @@ pytest -v -rs --cov --cov-report html
 
 ## API Docs
 
-Django-Ninja comes with an easy to use interactive API documentation. If you have launched the application, you can check it out on <localhost:8000/api/docs>.
+Django-Ninja comes with an easy to use interactive API documentation. If you have launched the application, you can check it out on `localhost:8000/api/docs`.
 
-Django also comes with a featureful admin panel which you can use by visiting <localhost:8000/admin> (you have to create superuser to use it)
+Django also comes with a featureful admin panel which you can use by visiting `localhost:8000/admin` (you have to create superuser to use it)
 
 ### Authentication
 
