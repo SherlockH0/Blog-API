@@ -1,45 +1,15 @@
-from datetime import datetime
-from typing import List, Optional
+from typing import List
 
 from django.shortcuts import get_object_or_404
-from ninja import FilterSchema, ModelSchema, PatchDict, Query, Router
+from ninja import PatchDict, Query, Router
 from ninja.pagination import paginate
 from ninja_jwt.authentication import JWTAuth
 
-from blogapi.blog.api.author import Author
 from blogapi.blog.models import Post
+from blogapi.blog.schemas import PostFilterSchema, PostIn, PostOut
 from blogapi.blog.services import new_post, update_resource
 
 router = Router()
-
-
-class PostIn(ModelSchema):
-    class Meta:
-        model = Post
-        fields = [
-            "title",
-            "content",
-            "automatic_answer_delay",
-            "automatically_answer_comments",
-        ]
-        fields_optional = [
-            "automatic_answer_delay",
-            "automatically_answer_comments",
-        ]
-
-
-class PostOut(ModelSchema):
-    author: Author
-
-    class Meta:
-        model = Post
-        fields = "__all__"
-
-
-class PostFilterSchema(FilterSchema):
-    created: Optional[datetime] = None
-    author: Optional[int] = None
-
 
 # Create
 

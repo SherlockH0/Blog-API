@@ -1,37 +1,22 @@
-from datetime import date, datetime
-from typing import List, Optional
+from datetime import date
+from typing import List
 
 from django.db.models import Count, F, Q
 from django.shortcuts import get_object_or_404
-from ninja import FilterSchema, ModelSchema, PatchDict, Query, Router, Schema
+from ninja import PatchDict, Query, Router, Schema
 from ninja.pagination import paginate
 from ninja_jwt.authentication import JWTAuth
 
-from blogapi.blog.api.author import Author
 from blogapi.blog.models import Comment, Post
+from blogapi.blog.schemas import (
+    CommentFilterSchema,
+    CommentIn,
+    CommentOut,
+    DailyAnalyticsSchema,
+)
 from blogapi.blog.services import new_comment
 
 router = Router()
-
-
-class CommentIn(Schema):
-    post_id: int
-    content: str
-    parent_comment_id: Optional[int] = None
-
-
-class CommentOut(ModelSchema):
-    author: Author
-
-    class Meta:
-        model = Comment
-        fields = "__all__"
-
-
-class CommentFilterSchema(FilterSchema):
-    created: Optional[datetime] = None
-    author: Optional[int] = None
-    post: Optional[int] = None
 
 
 # Create
@@ -99,12 +84,6 @@ def delete_comment(request, comment_id: int):
 
 
 # Comment analytics
-
-
-class DailyAnalyticsSchema(Schema):
-    date: date
-    blocked: int
-    active: int
 
 
 @router.get(
