@@ -1,0 +1,34 @@
+name: Quality Assurance
+on: [push, pull_request]
+
+jobs:
+  quality-assurance:
+    name: Quality Assurance
+    runs-on: ubuntu-latest
+    container: python:3.12-bookworm
+
+    services:
+      db:
+        image: postgres:14.2-alpine
+        env:
+          POSTGRES_DB: blogapi
+          POSTGRES_USER: blogapi
+          POSTGRES_PASSWORD: blogapi
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2.0.0
+        with: 
+          poetry-version: 1.8.3 
+
+      - name: Install Dependencies
+        run: make install
+
+      - name: Test
+        run: make test
+        env:
+          BLOGAPI_SETTING_DATABASES '{"default":{"HOST":"db"}}'
+          BLOGAPI_SETTING_LOCAL_SETTINGS_PATH "blogapi/project/settings/templates/settings.github.py"
+
