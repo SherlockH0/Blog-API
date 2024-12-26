@@ -20,6 +20,9 @@ This is a simple blog API with AI moderation features, written in python with Dj
 
 - [Django](https://www.djangoproject.com/)
 - [Django Ninja](https://django-ninja.dev/)
+- [Django RQ](https://github.com/rq/django-rq)
+- [Google AI](https://pypi.org/project/google-generativeai/)
+- [Pytest](https://docs.pytest.org/en/stable/getting-started.html)
 - [Docker](https://www.docker.com/)
 
 ## Usage
