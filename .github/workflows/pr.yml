@@ -14,6 +14,8 @@ jobs:
           POSTGRES_DB: blogapi
           POSTGRES_USER: blogapi
           POSTGRES_PASSWORD: blogapi
+      broker:
+        image: redis:7.2.6-alpine
 
     steps:
       - uses: actions/checkout@v2
