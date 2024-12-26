@@ -5,6 +5,7 @@ This is a simple blog API with AI moderation features, written in python with Dj
 ##### Table of Contents
 
 - [Demo](#demo)
+- [Tech Stack](#tech-stack]
 - [Usage](#usage)
   - [Launching the application in testing mode](#launching-the-application-in-testing-mode)
   - [Development](#development-and-running-tests)
@@ -14,6 +15,12 @@ This is a simple blog API with AI moderation features, written in python with Dj
 ## Demo
 
 [![Watch the video](https://img.youtube.com/vi/MnOoMGSmVR8/maxresdefault.jpg)](https://youtu.be/MnOoMGSmVR8)
+
+## Tech Stack
+
+- [Django](https://www.djangoproject.com/)
+- [Django Ninja](https://django-ninja.dev/)
+- [Docker](https://www.docker.com/)
 
 ## Usage
 
