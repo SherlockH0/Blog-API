@@ -14,7 +14,7 @@ jobs:
           POSTGRES_DB: blogapi
           POSTGRES_USER: blogapi
           POSTGRES_PASSWORD: blogapi
-      broker:
+      redis:
         image: redis:7.2.6-alpine
 
     steps:
@@ -33,4 +33,5 @@ jobs:
         env:
           BLOGAPI_SETTING_DATABASES: '{"default":{"HOST":"db"}}'
           BLOGAPI_SETTING_LOCAL_SETTINGS_PATH: "blogapi/project/settings/templates/settings.github.py"
+          BLOGAPI_SETTING_RQ_QUEUES: '{"default": { "HOST": "redis"}}'
 
