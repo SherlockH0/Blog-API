@@ -29,6 +29,6 @@ jobs:
       - name: Test
         run: make test
         env:
-          BLOGAPI_SETTING_DATABASES '{"default":{"HOST":"db"}}'
-          BLOGAPI_SETTING_LOCAL_SETTINGS_PATH "blogapi/project/settings/templates/settings.github.py"
+          BLOGAPI_SETTING_DATABASES: '{"default":{"HOST":"db"}}'
+          BLOGAPI_SETTING_LOCAL_SETTINGS_PATH: "blogapi/project/settings/templates/settings.github.py"
 
