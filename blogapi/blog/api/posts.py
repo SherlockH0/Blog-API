@@ -17,7 +17,7 @@ router = Router()
 @router.post("", auth=JWTAuth(), response={201: PostOut})
 def create_post(request, payload: PostIn):
     post = new_post(request.auth.id, payload.dict())
-    return 404, post
+    return 201, post
 
 
 # Read
